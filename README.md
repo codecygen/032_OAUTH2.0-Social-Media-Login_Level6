@@ -550,9 +550,13 @@ NPM package Passport which is a middleware and the Passport strategy
 
 
 NPM Package(s) Used:
+- passport
+- passport-local
+- passport-local-mongoose
 - express-session
 - passport
 - passport-google-oauth20
+- mongoose-findorcreate
 
 Get Permission from Google:
 - Go to Google Credentials.

@@ -6,15 +6,17 @@ const ejs = require('ejs');
 
 const app = express();
 
+// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+// ==========================================
+// ==========================================
+const findOrCreate = require('mongoose-findorcreate');
 // Include environment variable package for port, email and password
 const dotenv = require("dotenv");
 dotenv.config();
 // process.env.GOOGLE_OAUTH_CLIENT_ID
 // process.env.GOOGLE_OAUTH_CLIENT_SECRET
-
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-// ==========================================
-// ==========================================
+// process.env.SESSION_SECRET
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const session = require('express-session');
 // express-session is a middleware
 const passport = require('passport');
@@ -45,7 +47,9 @@ app.use(session({
     // This secret will be stored in environmental variable.
     // You do not want to expose this to the public.
     // It means if the secret is invalid, then the session is invalid as well.
-    secret: 'Our little secret.',
+    // SESSION_SECRET is saved as Our little secret.
+    // I give it here because this is a test server.
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     // After a day, the cookie will be deleted.
@@ -89,6 +93,21 @@ const User = mongoose.model('User', userSchema);
 // This section comes from passport package
 passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_OAUTH_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_OAUTH_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/google/secrets",
+    // This is added here for future proofing
+    userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    // findOrCreate is not a function in mongoose, you need to install package
+    // called mongoose-findorcreate
+    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
 passport.deserializeUser(User.deserializeUser());
 passport.serializeUser(function(user, done) {
     done(null, user);
