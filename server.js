@@ -68,7 +68,7 @@ app.use(passport.session());
 main().catch((err) => console.log(err));
 
 async function main() {
-    await mongoose.connect('mongodb://localhost:27017/cookiesSessionsDB', { useNewUrlParser: true });
+    await mongoose.connect('mongodb://localhost:27017/googleApiDB', { useNewUrlParser: true });
 }
 
 const userSchema = new mongoose.Schema({
@@ -81,6 +81,7 @@ const userSchema = new mongoose.Schema({
 // ==========================================
 // passport-local-mongoose is a Mongoose plugin.
 userSchema.plugin(passportLocalMongoose);
+userSchema.plugin(findOrCreate);
 // ==========================================
 // ==========================================
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
