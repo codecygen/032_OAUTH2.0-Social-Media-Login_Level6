@@ -550,5 +550,16 @@ NPM package Passport which is a middleware and the Passport strategy
 
 
 NPM Package(s) Used:
+- express-session
 - passport
 - passport-google-oauth20
+
+Get Permission from Google:
+- Go to Google Credentials.
+- Click on "CREATE CREDENTIALS" button then select "OAuth client ID".
+- Select "External" and click on "CREATE" button.
+- In the "OAuth consent screen" fill in the compulsory sections of the form. As an App Name I put "Google-OAuth2.0-Test".
+- In the Scopes tab you specify the permissions that the user should grant your app. Select email, profile and openid. These are the very basic permission google give your website everytime you authenticate.
+- Next, in the Test users tab, add the test users. I will add my email address as a test user.
+- Then go to "Credentials" tab from the left hand side of the page. Click on "CREATE CREDENTIALS" button then select "OAuth client ID".
+- Select "Web Application" and as an App Name put "Google-OAuth2.0-Test". For "Authorized JavaScript origins" put "http://localhost:3000". Whenever you change your server to an actual production server, you have to change this link. For "Authorized redirect URIs" put "http://localhost:3000/auth/google/secrets". Click on "CREATE" button.

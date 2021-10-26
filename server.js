@@ -6,6 +6,11 @@ const ejs = require('ejs');
 
 const app = express();
 
+// Include environment variable package for port, email and password
+const dotenv = require("dotenv");
+dotenv.config();
+// process.env.GoogleOAuthApiNum
+
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 // ==========================================
 // ==========================================
