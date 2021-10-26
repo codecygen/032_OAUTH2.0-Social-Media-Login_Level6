@@ -9,7 +9,8 @@ const app = express();
 // Include environment variable package for port, email and password
 const dotenv = require("dotenv");
 dotenv.config();
-// process.env.GoogleOAuthApiNum
+// process.env.GOOGLE_OAUTH_CLIENT_ID
+// process.env.GOOGLE_OAUTH_CLIENT_SECRET
 
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 // ==========================================
