@@ -71,15 +71,17 @@ async function main() {
     await mongoose.connect('mongodb://localhost:27017/googleApiDB', { useNewUrlParser: true });
 }
 
-const userSchema = new mongoose.Schema({
-    email: String,
-    password: String
-});
-
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 // ==========================================
 // ==========================================
 // passport-local-mongoose is a Mongoose plugin.
+// googleId section is to prevent userID to be created again on DB
+// when login page for google prompted.
+const userSchema = new mongoose.Schema({
+    email: String,
+    password: String,
+    googleId: String
+});
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
 // ==========================================
@@ -104,6 +106,7 @@ passport.use(new GoogleStrategy({
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
   },
   function(accessToken, refreshToken, profile, cb) {
+    console.log(profile);
     // findOrCreate is not a function in mongoose, you need to install package
     // called mongoose-findorcreate
     User.findOrCreate({ googleId: profile.id }, function (err, user) {
