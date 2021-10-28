@@ -541,7 +541,11 @@ Your web app might want to have Read/Write access to your database if it needs t
 User can revoke the authorization that they granted on your website.
 
 There are Steps to use OAuth
-1) Step 1: Set up Your App in the developer console of bigger website in return we get an App ID or a client ID.
+1) Step 1: Set up Your App in the developer console of bigger website in return we get an App ID (Client ID), App Secret (Client Secret) and we also need to setup a callback URI.
+example"
+Client ID: 30846982735492635854661
+Client Secret: 317kajfgiaghakjglm71d1b20b8feab65a47dcb6b
+Callback URI: http://localhost:3000/auth/google/secrets
 2) Step 2: User Login Page. This page will take them to the actual website of bigger website so that the user can login.
 3) Step 3: Our App asks permission after the user logins to their account on the bigger website.
 4) Step 4: Now out server is able to receive Auth Code. If we want to go a step further, we can also exchange our Auth Code for an Access Token. Then we can save the Access Token into our database. The Access Token can be saved if we want pieces of info from the bigger website. The Access Token is valid longer than Auth Code. Access Token is like a one time pass whilst the Access Token can be perceived as a year pass.
