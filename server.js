@@ -15,6 +15,8 @@ const dotenv = require("dotenv");
 dotenv.config();
 // process.env.GOOGLE_OAUTH_CLIENT_ID
 // process.env.GOOGLE_OAUTH_CLIENT_SECRET
+// process.env.FACEBOOK_OAUTH_CLIENT_ID
+// process.env.FACEBOOK_OAUTH_CLIENT_SECRET
 // process.env.SESSION_SECRET
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const session = require('express-session');

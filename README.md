@@ -556,6 +556,7 @@ NPM Package(s) Used:
 - express-session
 - passport
 - passport-google-oauth20
+- passport-facebook
 - mongoose-findorcreate
 
 Get Permission from Google:
