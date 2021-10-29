@@ -162,23 +162,21 @@ app.get('/auth/google',
     passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-app.get('/auth/google/secrets', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect secrets page.
-    res.redirect('/secrets');
-});
+app.get('/auth/google/secrets',
+  passport.authenticate('google', { 
+      failureRedirect: '/login', 
+      successRedirect: '/secrets' })
+);
 
 app.get('/auth/facebook',
   passport.authenticate('facebook')
 );
 
 app.get('/auth/facebook/secrets',
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/secrets');
-});
+  passport.authenticate('facebook', { 
+      failureRedirect: '/login', 
+      successRedirect: '/secrets' })
+);
 // ==========================================
 // ==========================================
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
