@@ -86,7 +86,8 @@ const userSchema = new mongoose.Schema({
     email: String,
     password: String,
     googleId: String,
-    facebookId: String
+    facebookId: String,
+    secret: String
 });
 userSchema.plugin(passportLocalMongoose);
 userSchema.plugin(findOrCreate);
@@ -207,6 +208,38 @@ app.get('/secrets', (req, res) => {
         res.redirect('/login');
     }
 });
+
+app.get('/submit', (req, res) => {
+    if(req.isAuthenticated()) {
+        res.render('submit');
+        // req.session comes from espress-session package.
+        // It gives out info about session created in server side.
+        console.log(req.session);
+    } else {
+        res.redirect('/login');
+    }
+});
+
+app.post('/submit', (req, res) => {
+    const submittedSecret = req.body.secret;
+    // req.user shows user info when somebody made a post request
+    // on "/submit" page.
+    console.log(req.user._id);
+
+    User.findById(req.user._id, (err, foundUser) => {
+        if(err) {
+            console.error(err);
+        } else {
+            if(foundUser) {
+                foundUser.secret = submittedSecret;
+                foundUser.save(() => {
+                    res.redirect('/secrets');
+                });
+            }
+        }
+    });
+});
+
 app.post('/register', (req, res) => {
     User.register({username: req.body.username}, req.body.password, (err, user) => {
       if(err) {
