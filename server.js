@@ -115,7 +115,7 @@ passport.use(new GoogleStrategy({
     console.log(profile);
     // findOrCreate is not a function in mongoose, you need to install package
     // called mongoose-findorcreate
-    User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    User.findOrCreate({ googleId: profile.id, username: profile.emails[0].value }, function (err, user) {
       return cb(err, user);
     });
   }
@@ -158,7 +158,7 @@ app.get('/', (req, res) => {
 // ==========================================
 // ==========================================
 app.get('/auth/google', 
-    passport.authenticate('google', { scope: ['profile'] })
+    passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
 app.get('/auth/google/secrets', 
