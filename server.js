@@ -124,11 +124,12 @@ passport.use(new GoogleStrategy({
 passport.use(new FacebookStrategy({
     clientID: process.env.FACEBOOK_OAUTH_CLIENT_ID,
     clientSecret: process.env.FACEBOOK_OAUTH_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/auth/facebook/secrets"
+    callbackURL: "http://localhost:3000/auth/facebook/secrets",
+    profileFields: ['id', 'displayName', 'name', 'emails']
   },
   function(accessToken, refreshToken, profile, cb) {
     console.log(profile);
-    User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+    User.findOrCreate({ facebookId: profile.id, username: profile._json.email }, function (err, user) {
       return cb(err, user);
     });
   }
@@ -169,7 +170,7 @@ app.get('/auth/google/secrets',
 });
 
 app.get('/auth/facebook',
-  passport.authenticate('facebook', { scope: ['profile'] })
+  passport.authenticate('facebook')
 );
 
 app.get('/auth/facebook/secrets',
