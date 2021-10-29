@@ -21,6 +21,7 @@ dotenv.config();
 // http://localhost:3000/auth/facebook/secrets
 // process.env.SESSION_SECRET
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const FacebookStrategy = require('passport-facebook').Strategy;
 const session = require('express-session');
 // express-session is a middleware
 const passport = require('passport');
@@ -72,7 +73,7 @@ app.use(passport.session());
 main().catch((err) => console.log(err));
 
 async function main() {
-    await mongoose.connect('mongodb://localhost:27017/googleApiDB', { useNewUrlParser: true });
+    await mongoose.connect('mongodb://localhost:27017/socialApiDB', { useNewUrlParser: true });
 }
 
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -119,6 +120,28 @@ passport.use(new GoogleStrategy({
     });
   }
 ));
+
+passport.use(new FacebookStrategy({
+    clientID: process.env.FACEBOOK_OAUTH_CLIENT_ID,
+    clientSecret: process.env.FACEBOOK_OAUTH_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/facebook/secrets"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    console.log(profile);
+    User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+      return cb(err, user);
+    });
+  }
+));
+
+// process.env.GOOGLE_OAUTH_CLIENT_ID
+// process.env.GOOGLE_OAUTH_CLIENT_SECRET
+// http://localhost:3000/auth/google/secrets
+// process.env.FACEBOOK_OAUTH_CLIENT_ID
+// process.env.FACEBOOK_OAUTH_CLIENT_SECRET
+// http://localhost:3000/auth/facebook/secrets
+// process.env.SESSION_SECRET
+
 passport.deserializeUser(function(user, done) {
     done(null, user);
 });
@@ -142,6 +165,17 @@ app.get('/auth/google/secrets',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect secrets page.
+    res.redirect('/secrets');
+});
+
+app.get('/auth/facebook',
+  passport.authenticate('facebook', { scope: ['profile'] })
+);
+
+app.get('/auth/facebook/secrets',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
     res.redirect('/secrets');
 });
 // ==========================================
