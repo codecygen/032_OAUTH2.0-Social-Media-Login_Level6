@@ -190,6 +190,18 @@ app.get('/register', (req, res) => {
     res.render('register');
 });
 
+User.find({secret: {$ne: null}}, (err, foundUsers) => {
+    if(err){
+        console.error(err);
+    } else {
+        if(foundUsers){
+            console.log(foundUsers);
+        }
+    }
+});
+
+
+
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 // ==========================================
 // ==========================================
@@ -200,10 +212,19 @@ app.get('/logout', (req, res) => {
 });
 app.get('/secrets', (req, res) => {
     if(req.isAuthenticated()) {
-        res.render('secrets');
+        // res.render('secrets');
         // req.session comes from espress-session package.
         // It gives out info about session created in server side.
         console.log(req.session);
+        User.find({secret: {$ne: null}}, (err, foundUsers) => {
+            if(err){
+                console.error(err);
+            } else {
+                if(foundUsers){
+                    res.render('secrets', {usersWithSecrets: foundUsers})
+                }
+            }
+        });
     } else {
         res.redirect('/login');
     }

@@ -1,3 +1,16 @@
+How it works?
+This project is about registration and submitting something which shows in the login page.
+
+3 different options
+1) Normal registration
+2) Facebook registration
+3) Google registration
+
+Once you register, login using your account. Submit a secret and it will show in
+localhost:3000/submit page.
+
+---
+
 Level 1 - Database Security - Password Strings
 ===
 
